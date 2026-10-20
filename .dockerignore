@@ -1,0 +1,11 @@
+.git
+.venv
+venv
+__pycache__
+.pytest_cache
+node_modules
+dist
+data
+.env
+.env.*
+company_facts.txt

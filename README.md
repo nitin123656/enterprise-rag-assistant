@@ -73,6 +73,41 @@ npm run dev
 
 Open http://localhost:5173.
 
+## Deploy publicly (Azure backend + Vercel frontend)
+
+The API needs persistent local storage for ChromaDB, so deploy it as an Azure App Service
+custom Linux container with persistent `/home` storage. Deploy the React app separately to
+Vercel.
+
+### Deploy the backend to Azure
+
+1. Create an Azure Linux Web App using the repository's root `Dockerfile`. Choose an App
+   Service plan with enough memory for PyTorch and the sentence-transformer model.
+2. Enable persistent container storage with `WEBSITES_ENABLE_APP_SERVICE_STORAGE=true`.
+   Set `WEBSITES_PORT=8000` and `CHROMA_PATH=/home/chroma`.
+3. Configure these application settings in Azure:
+   - `GEMINI_API_KEY`: your private Gemini key (store it as an Azure app setting; never commit it)
+   - `GEMINI_MODEL=gemini-3.8-flash`
+   - `GEMINI_FALLBACK_MODEL=gemini-3.5-flash`
+   - `CORS_ORIGINS`: the exact Vercel site origin, for example `https://your-project.vercel.app`
+4. Start the Web App and verify `https://<your-api-host>/health` returns
+   `{"status":"healthy"}`.
+
+Uploaded files and their extracted text are stored in ChromaDB on the persistent `/home`
+volume. Back up that volume if the indexed data matters; the app does not configure automated
+backups or authentication.
+
+### Deploy the frontend to Vercel
+
+1. Import this GitHub repository into Vercel and set the project root directory to `frontend`.
+2. Add the `VITE_API_URL` environment variable with the Azure API origin, for example
+   `https://your-api-host.azurewebsites.net` (no trailing slash).
+3. Deploy, then add the exact Vercel origin to the Azure `CORS_ORIGINS` setting and restart
+   the API.
+
+Deploying publicly exposes document upload, querying, listing, and deletion to visitors. Add
+authentication and access controls before using it with private or sensitive documents.
+
 ## API reference
 
 ### `GET /health`

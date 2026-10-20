@@ -10,10 +10,9 @@ from backend.rag_pipeline import answer_question
 app = FastAPI(title=settings.app_name, version="1.0.0",
               description="Upload PDFs/TXT files and ask grounded questions with source citations.")
 
-# Allow the local Vite dev server on either loopback hostname.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=settings.cors_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
