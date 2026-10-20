@@ -1,0 +1,10 @@
+.env
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+node_modules/
+dist/
+data/chroma/
+.DS_Store
