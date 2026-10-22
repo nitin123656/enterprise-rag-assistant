@@ -8,6 +8,20 @@ def test_health():
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
 
+def test_production_frontend_is_allowed_by_cors():
+    origin = "https://enterprise-rag-assistant-six.vercel.app"
+
+    response = client.options(
+        "/documents",
+        headers={
+            "Origin": origin,
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == origin
+
 def test_upload_rejects_unsupported_file():
     response = client.post("/upload", files={"file": ("bad.png", b"x", "image/png")})
     assert response.status_code == 400
