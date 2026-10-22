@@ -103,8 +103,9 @@ backups or authentication.
 2. Add the `VITE_API_URL` environment variable with the Azure API origin, for example
    `https://your-api-host.azurewebsites.net` (no trailing slash). The `frontend/.env.production`
    file supplies the current Render API origin unless a Vercel environment variable overrides it.
-3. Deploy, then add the exact Vercel site origin to the backend `CORS_ORIGINS` setting and
-   restart or redeploy the API.
+3. Deploy. The configured Vercel site origin is included in the backend's default CORS origins.
+   For a different frontend domain, add its exact origin to `CORS_ORIGINS` and restart or
+   redeploy the API.
 
 Deploying publicly exposes document upload, querying, listing, and deletion to visitors. Add
 authentication and access controls before using it with private or sensitive documents.

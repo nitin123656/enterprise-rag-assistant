@@ -12,10 +12,12 @@ class Settings:
         origin.strip()
         for origin in os.getenv(
             "CORS_ORIGINS",
-            "http://localhost:5173,http://127.0.0.1:5173,https://enterprise-rag-assistant-six.vercel.app",
+            "http://localhost:5173,http://127.0.0.1:5173",
         ).split(",")
         if origin.strip()
     ]
+    if "https://enterprise-rag-assistant-six.vercel.app" not in cors_origins:
+        cors_origins.append("https://enterprise-rag-assistant-six.vercel.app")
     collection_name: str = os.getenv("CHROMA_COLLECTION", "enterprise_documents")
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
