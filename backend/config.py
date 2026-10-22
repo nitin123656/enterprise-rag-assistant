@@ -20,8 +20,8 @@ class Settings:
         cors_origins.append("https://enterprise-rag-assistant-six.vercel.app")
     # The versioned collection avoids mixing Gemini vectors with old MiniLM vectors.
     collection_name: str = os.getenv("CHROMA_COLLECTION", "enterprise_kb_v2")
-    embedding_model: str = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
-    gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
+    embedding_model: str = os.getenv("EMBEDDING_MODEL", "gemini-embedding-2")
+    gemini_api_key: str = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY", "")
     gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
     gemini_fallback_model: str = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash")
     chunk_size: int = int(os.getenv("CHUNK_SIZE", "1200"))

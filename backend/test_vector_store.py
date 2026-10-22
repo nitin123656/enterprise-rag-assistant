@@ -50,7 +50,7 @@ def test_collection_uses_gemini_embedding_and_versioned_collection(monkeypatch, 
     monkeypatch.setattr(vector_store.settings, "gemini_api_key", "test-api-key")
     monkeypatch.setattr(vector_store.settings, "data_dir", tmp_path)
     monkeypatch.setattr(vector_store.settings, "collection_name", "enterprise_kb_v2")
-    monkeypatch.setattr(vector_store.settings, "embedding_model", "gemini-embedding-001")
+    monkeypatch.setattr(vector_store.settings, "embedding_model", "gemini-embedding-2")
 
     client = object()
     monkeypatch.setattr(
@@ -83,7 +83,7 @@ def test_collection_uses_gemini_embedding_and_versioned_collection(monkeypatch, 
         vector_store.get_collection.cache_clear()
 
     assert embedding_options == {
-        "model": "gemini-embedding-001",
+        "model": "gemini-embedding-2",
         "google_api_key": "test-api-key",
         "output_dimensionality": 768,
     }

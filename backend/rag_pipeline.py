@@ -36,7 +36,9 @@ def answer_question(question: str, document_name: str | None = None) -> dict:
 
     prompt = SYSTEM_PROMPT.format(context="\n\n---\n\n".join(context_parts), question=question)
     if not settings.gemini_api_key:
-        raise RuntimeError("GEMINI_API_KEY is not configured. Add it to your .env file.")
+        raise RuntimeError(
+            "GEMINI_API_KEY or GOOGLE_API_KEY is not configured. Add one to your environment."
+        )
 
     client = genai.Client(api_key=settings.gemini_api_key)
     models = list(dict.fromkeys(

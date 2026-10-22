@@ -37,7 +37,8 @@ notepad .env
 ```
 
 If Tesseract was installed after opening PowerShell, open a new terminal so its PATH update is picked up.
-Add your Gemini API key to `.env`. Keep this file private and do not commit it to Git.
+Add your Gemini API key as `GEMINI_API_KEY` or `GOOGLE_API_KEY` in `.env`. Keep this file
+private and do not commit it to Git.
 The backend retries temporary Gemini errors and then tries `GEMINI_FALLBACK_MODEL`
 (`gemini-3.5-flash` by default). If both models remain unavailable, the API returns HTTP 503
 with a message the frontend can display.
@@ -89,8 +90,8 @@ Vercel.
 2. Enable persistent container storage with `WEBSITES_ENABLE_APP_SERVICE_STORAGE=true`.
    Set `WEBSITES_PORT=8000` and `CHROMA_PATH=/home/chroma`.
 3. Configure these application settings in Azure:
-   - `GEMINI_API_KEY`: your private Gemini key (store it as an Azure app setting; never commit it)
-   - `CHROMA_COLLECTION=enterprise_kb_v2` and `EMBEDDING_MODEL=gemini-embedding-001`
+   - `GEMINI_API_KEY` or `GOOGLE_API_KEY`: your private Gemini key (store it as an Azure app setting; never commit it)
+   - `CHROMA_COLLECTION=enterprise_kb_v2` and `EMBEDDING_MODEL=gemini-embedding-2`
    - `GEMINI_MODEL=gemini-3.8-flash`
    - `GEMINI_FALLBACK_MODEL=gemini-3.5-flash`
    - `CORS_ORIGINS`: the exact Vercel site origin, for example `https://your-project.vercel.app`

@@ -1,4 +1,3 @@
-import os
 from functools import lru_cache
 
 import chromadb
@@ -12,7 +11,7 @@ EMBEDDING_DIMENSIONS = 768
 
 @lru_cache(maxsize=1)
 def get_collection() -> Chroma:
-    api_key = settings.gemini_api_key or os.getenv("GOOGLE_API_KEY")
+    api_key = settings.gemini_api_key
     if not api_key:
         raise RuntimeError(
             "GEMINI_API_KEY or GOOGLE_API_KEY is required for document embeddings."

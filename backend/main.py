@@ -1,4 +1,6 @@
 from pathlib import Path
+import traceback
+
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
@@ -41,6 +43,7 @@ async def upload_document(file: UploadFile = File(...)):
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except Exception as exc:
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail="Document processing failed.") from exc
     return {"message": "Document indexed successfully.", "document_name": filename,
             "chunk_count": count}

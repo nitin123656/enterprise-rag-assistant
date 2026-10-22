@@ -26,6 +26,27 @@ def test_upload_rejects_unsupported_file():
     response = client.post("/upload", files={"file": ("bad.png", b"x", "image/png")})
     assert response.status_code == 400
 
+def test_upload_logs_processing_exception_without_exposing_details(monkeypatch):
+    traceback_calls = []
+
+    def raise_processing_error(*args, **kwargs):
+        raise Exception("internal path or service credential details")
+
+    monkeypatch.setattr("backend.main.extract_text", raise_processing_error)
+    monkeypatch.setattr(
+        "backend.main.traceback.print_exc",
+        lambda: traceback_calls.append(True),
+    )
+
+    response = client.post(
+        "/upload",
+        files={"file": ("facts.txt", b"company facts", "text/plain")},
+    )
+
+    assert response.status_code == 500
+    assert response.json() == {"detail": "Document processing failed."}
+    assert traceback_calls == [True]
+
 def test_blank_query_rejected():
     response = client.post("/query", json={"question": "   "})
     assert response.status_code == 422
