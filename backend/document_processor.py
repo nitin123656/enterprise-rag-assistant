@@ -4,7 +4,7 @@ import shutil
 from PIL import Image
 import pymupdf
 import pytesseract
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 
 ALLOWED_EXTENSIONS = {".pdf", ".txt"}
 
@@ -61,14 +61,34 @@ def extract_text(filename: str, content: bytes) -> str:
         raise ValueError("No text could be extracted from the PDF, including with OCR.")
     return text
 
-def chunk_text(text: str, chunk_size: int = 600, chunk_overlap: int = 100) -> list[str]:
+def chunk_text(text: str, chunk_size: int = 1200, chunk_overlap: int = 100) -> list[str]:
     if chunk_size <= 0 or chunk_overlap < 0 or chunk_overlap >= chunk_size:
         raise ValueError("Require chunk_size > chunk_overlap >= 0.")
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap,
-        length_function=len,
-        separators=["\n\n", "\n", ". ", " ", ""],
-        add_start_index=True,
+    header_splitter = MarkdownHeaderTextSplitter(
+        headers_to_split_on=[
+            ("#", "Header 1"),
+            ("##", "Header 2"),
+            ("###", "Header 3"),
+        ]
     )
-    return [chunk.strip() for chunk in splitter.split_text(text) if chunk.strip()]
+    chunks = []
+    for section in header_splitter.split_text(text):
+        header = "\n".join(
+            f"{'#' * level} {section.metadata[f'Header {level}']}"
+            for level in range(1, 4)
+            if section.metadata.get(f"Header {level}")
+        )
+        prefix = f"{header}\n" if header else ""
+        section_chunk_size = max(1, chunk_size - len(prefix))
+        splitter = RecursiveCharacterTextSplitter(
+            chunk_size=section_chunk_size,
+            chunk_overlap=min(chunk_overlap, section_chunk_size - 1),
+            length_function=len,
+            separators=["\n\n", "\n", ". ", " ", ""],
+        )
+        chunks.extend(
+            f"{prefix}{chunk.strip()}"
+            for chunk in splitter.split_text(section.page_content)
+            if chunk.strip()
+        )
+    return chunks

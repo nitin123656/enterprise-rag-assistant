@@ -41,7 +41,7 @@ def test_relevant_match_within_configured_distance_reaches_model(monkeypatch):
         lambda **kwargs: SimpleNamespace(models=generate_call),
     )
 
-    result = rag_pipeline.answer_question("What is the main product?")
+    result = rag_pipeline.answer_question("What is the main product?", "test-user")
 
     assert result["grounded"] is True
     assert [source["document_name"] for source in result["sources"]] == [
@@ -64,7 +64,7 @@ def test_no_match_within_distance_returns_fallback_without_model_call(monkeypatc
         lambda **kwargs: (_ for _ in ()).throw(AssertionError("model should not run")),
     )
 
-    result = rag_pipeline.answer_question("Where is NovaTech headquartered?")
+    result = rag_pipeline.answer_question("Where is NovaTech headquartered?", "test-user")
 
     assert result == {"answer": FALLBACK_ANSWER, "sources": [], "grounded": False}
 
@@ -97,7 +97,8 @@ def test_model_fallback_is_returned_without_source_citations(monkeypatch):
     )
 
     result = rag_pipeline.answer_question(
-        "Who is the Chief Financial Officer (CFO) of NovaTech Solutions?"
+        "Who is the Chief Financial Officer (CFO) of NovaTech Solutions?",
+        "test-user",
     )
 
     assert result == {"answer": FALLBACK_ANSWER, "sources": [], "grounded": False}
@@ -127,7 +128,7 @@ def test_transient_gemini_error_retries_and_returns_answer(monkeypatch):
     sleeps = []
     monkeypatch.setattr(rag_pipeline.time, "sleep", sleeps.append)
 
-    result = rag_pipeline.answer_question("Where is the company headquartered?")
+    result = rag_pipeline.answer_question("Where is the company headquartered?", "test-user")
 
     assert result["grounded"] is True
     assert "Bengaluru" in result["answer"]
@@ -161,7 +162,7 @@ def test_unavailable_primary_model_uses_configured_fallback(monkeypatch):
     )
     monkeypatch.setattr(rag_pipeline.time, "sleep", lambda _: None)
 
-    result = rag_pipeline.answer_question("Where is the company headquartered?")
+    result = rag_pipeline.answer_question("Where is the company headquartered?", "test-user")
 
     assert result["grounded"] is True
     assert used_models == [
@@ -196,7 +197,7 @@ def test_exhausted_gemini_outage_has_actionable_error(monkeypatch):
     monkeypatch.setattr(rag_pipeline.time, "sleep", sleeps.append)
 
     try:
-        rag_pipeline.answer_question("Where is the company headquartered?")
+        rag_pipeline.answer_question("Where is the company headquartered?", "test-user")
     except RuntimeError as exc:
         assert "temporarily unavailable" in str(exc)
     else:

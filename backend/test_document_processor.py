@@ -52,6 +52,36 @@ def test_chunking_overlap_and_content():
     assert all(chunks)
     assert "".join(chunks)  # content is retained across chunks
 
+def test_markdown_chunks_include_parent_headers():
+    text = """# Travel Policy
+
+## Air Travel
+
+Directors may book Premium Economy for eligible flights.
+
+### Long-Haul Flights
+
+Flights exceeding nine hours may qualify for Business Class.
+"""
+
+    chunks = chunk_text(text, chunk_size=200, chunk_overlap=10)
+
+    assert len(chunks) == 2
+    assert chunks[0].startswith("# Travel Policy\n## Air Travel\nDirectors")
+    assert chunks[1].startswith(
+        "# Travel Policy\n## Air Travel\n### Long-Haul Flights\n"
+    )
+    assert "Flights exceeding nine hours" in chunks[1]
+
+def test_split_markdown_section_repeats_headers():
+    text = "# Travel\n## Air\n" + "Approval is required before travel. " * 20
+
+    chunks = chunk_text(text, chunk_size=100, chunk_overlap=10)
+
+    assert len(chunks) > 1
+    assert all(chunk.startswith("# Travel\n## Air\n") for chunk in chunks)
+    assert all(len(chunk) <= 100 for chunk in chunks)
+
 def test_invalid_overlap_rejected():
     with pytest.raises(ValueError):
         chunk_text("abc", 100, 100)

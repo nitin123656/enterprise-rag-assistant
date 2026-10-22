@@ -1,0 +1,5 @@
+Company: NovaTech Solutions
+Founded: 2018
+Headquarters: Bengaluru, India
+Main product: Enterprise document automation software
+Employee count: 450

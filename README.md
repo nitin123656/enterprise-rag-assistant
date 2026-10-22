@@ -5,7 +5,7 @@ A full-stack proof of concept: React + Vite frontend, FastAPI backend, persisten
 ## Features
 
 - Upload PDF and UTF-8 TXT documents. Scanned PDF pages are processed with local English OCR.
-- Extract text and split it into 600-character chunks with 100-character overlap.
+- Extract text and split it into 1,200-character chunks with 100-character overlap. Markdown heading context is included in each chunk.
 - Generate embeddings locally and persist vectors in ChromaDB.
 - Retrieve up to three relevant chunks using cosine distance.
 - Generate grounded answers with source labels and source excerpts.
@@ -194,7 +194,7 @@ Tests cover extraction, chunk validation, API health, unsupported uploads and bl
 
 ## Design decisions and limitations
 
-- `chunk_size=600` and `chunk_overlap=100` are **characters**, not tokens. Tune them using representative documents and questions.
+- `chunk_size=1200` and `chunk_overlap=100` are **characters**, not tokens. Markdown heading context is prepended to each chunk to retain its section hierarchy. Tune these values using representative documents and questions.
 - ChromaDB cosine **distance** is lower for closer matches. The `MAX_COSINE_DISTANCE` threshold is a heuristic, not a calibrated confidence score; evaluate it with an in-domain validation set.
 - Source excerpts come from retrieved chunks. Model-generated citation strings are not independently verified at claim level in this PoC.
 - Prompt instructions reduce but cannot eliminate hallucinations or prompt injection. Retrieved document text is explicitly treated as untrusted context.

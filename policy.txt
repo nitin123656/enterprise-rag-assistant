@@ -1,0 +1,79 @@
+The annual team retreat is in Goa from November 10 to 14. Travel reimbursements are capped at 25,000 INR. All expense receipts must be submitted to HR by November 20.
+
+Global Enterprise Operations, Travel & Compliance Policy (Master Document v4.2)
+
+Effective Date: January 1, 2026 | Document ID: GOC-POL-2026-V4
+
+## Section 1: Business Travel, Airfare Classes & Per Diem Schedules
+
+### 1.1 Air Travel Booking Guidelines and Class Entitlements
+
+All corporate travel must be booked through the enterprise corporate travel portal (Concur) at least 14 calendar days prior to departure. Air travel booking classes are strictly governed by flight duration and employee banding:
+
+- Flights under 4 hours scheduled block time: All employees, regardless of corporate title, must book Economy Standard. Basic Economy fares lacking seat selection are prohibited.
+- Flights between 4 and 9 continuous block hours: Employees at Director level and above, or any employee traveling on a red-eye flight (scheduled departure between 23:00 and 06:00 local time), may book Premium Economy.
+- Flights exceeding 9 continuous block hours: All employees traveling transoceanic or international routes exceeding 9 hours are eligible for Business Class seating, provided the booking is submitted at least 21 days in advance.
+- Vice Presidents and Executive Committee Members: Eligible for Business Class on all flights exceeding 5 block hours.
+- First Class Exception: Commercial First Class airfare is strictly non-reimbursable under all circumstances. Private aviation charter requires unanimous Executive Board approval.
+
+### 1.2 Lodging Thresholds and Daily Per Diem Allowances
+
+Daily meal and incidental expenses (M&IE) operate on a fixed per diem schedule based on destination city classification. Receipts are not required for standard per diem claims, but employees must verify overnight travel status:
+
+- Tier A Metro Hubs (New York City, San Francisco, Zurich, Singapore): Maximum daily per diem is $125.00 USD (or local currency equivalent). Maximum nightly lodging rate is $340.00 USD excluding city occupancy taxes.
+- Tier B Major Capitals (London, Tokyo, Paris, Sydney): Maximum daily per diem is £95.00 GBP, ¥18,500 JPY, €110.00 EUR, or $140.00 AUD respectively. Maximum lodging cap is $270.00 USD equivalent.
+- Tier C Standard Domestic Markets (All other cities): Maximum daily per diem is $75.00 USD. Maximum lodging cap is $195.00 USD.
+- Incidentals & Alcohol Restrictions: Alcoholic beverages are strictly non-reimbursable under standard daily per diem. Alcohol expenses may only be submitted under Client Entertainment (Code GL-8840), requiring a minimum of two external client attendees and pre-approval from a Managing Director if total spend exceeds $400.00 USD.
+
+## Section 2: IT Equipment Lifecycle, Refresh Cadence & Security Standards
+
+### 2.1 Hardware Refresh Cadence by Department
+
+Enterprise hardware remains the exclusive property of the company and is depreciated on strict multi-year lifecycle schedules:
+
+- Standard Engineering & Corporate Operations: Standard hardware issue consists of Dell Latitude 5540 (Intel Core i7, 32GB RAM). Standard refresh lifecycle is 36 months from initial device provisioning.
+- High-Performance Computing, AI/ML & Senior Architecture: Eligible for Performance Tier hardware (Apple MacBook Pro 16-inch M3 Max, 64GB RAM or Dell Precision 7680 Workstation). Refresh lifecycle is 24 months. Eligibility requires written Director approval and a minimum of 6 continuous months in a designated machine learning or systems engineering role.
+- Out-of-Cycle Early Replacement Rules: Early replacement prior to standard lifecycle expiration is permitted solely under two conditions: (a) unrepairable catastrophic hardware failure certified in writing by IT Depot Services, or (b) documented physical theft accompanied by an official police report filed within 48 hours. In case of certified unrepairable failure, the employee receives an identical refurbished unit matching their original tier; an unrepairable failure does not grant an upgrade to the Performance Tier.
+
+### 2.2 Security Protocols & International Travel Enclaves
+
+Employees traveling internationally with corporate hardware must comply with Data Sovereignty Directive DSD-09:
+
+- Clean Travel Laptops: Any employee traveling to designated Tier-3 security jurisdictions (including mainland China, Russia, and Belarus) is prohibited from bringing standard corporate-issued laptops. Employees must check out a temporary, sterile "Loaner Travel Laptop" from IT Security Depot at least 5 business days before departure.
+- Loaner Laptop Decommissioning: Upon return from Tier-3 jurisdictions, the loaner laptop must be surrendered to IT Security within 24 hours for cryptographic wiping. No local data transfer to primary machines via USB is permitted; all files must transit through cloud quarantine storage (Vault-Sec-7).
+
+## Section 3: Dual-Project Data Governance & Classification
+
+### 3.1 Project Aethelgard (APAC Commercial Logistics Modernization)
+
+- Project Scope: Cloud-native supply-chain tracking across ASEAN maritime shipping routes.
+- Data Classification: Commercial Confidential (Level 2).
+- Hosting Environment: Multi-tenant AWS ap-southeast-1 (Singapore) VPC with AES-256 server-side encryption.
+- Access Permissions: Open to all active full-time employees and vetted external contractors who have executed Standard NDA Form 12-B.
+- Incident Escalation: Security incidents must be reported to the APAC Regional Security Operations Center (APAC-SOC) within 12 hours of discovery.
+
+### 3.2 Project Aethelgard-X (US Federal Sovereign Aerospace Logistics)
+
+- Project Scope: Cloud migration of defense transport records for civil aerospace contractors.
+- Data Classification: Restricted Defense Sensitive (Level 4 / ITAR-Compliant).
+- Hosting Environment: Isolated AWS GovCloud (US-East) dedicated sovereign tenancy with FIPS 140-3 Level 3 hardware security module (HSM) key management.
+- Access Permissions: Restricted exclusively to US citizens holding active DoD Secret Clearance or higher. External contractors and non-US citizens are barred from accessing codebase, logs, or architectural diagrams without explicit waiver from the Directorate of Defense Trade Controls (DDTC).
+- Incident Escalation: Any potential data spillage or unauthorized access must be reported to the Global Chief Information Security Officer (CISO) and the Defense Counterintelligence and Security Agency (DCSA) within 1 hour of detection.
+
+## Section 4: Performance Bonus Vesting, Severance & Leave Accrual
+
+### 4.1 Discretionary Annual Performance Bonus Structure
+
+The enterprise annual performance incentive plan is evaluated on November 30 of each calendar year:
+
+- Eligibility Window: Employees must have completed at least 90 calendar days of active service prior to October 1 of the performance year to be eligible for pro-rated bonus consideration.
+- Performance Improvement Plan (PIP) Disqualification: Any employee placed on an active Performance Improvement Plan (PIP) or documented disciplinary probation on or after September 15 forfeits 100% of their annual bonus entitlement for that calendar year, regardless of year-to-date sales quotas or KPI milestone achievement.
+- Payout Schedule: Approved performance bonuses are distributed in two equal installments: 50% on January 31 following the performance year, and the remaining 50% on April 30. Employees must remain actively employed on the respective payout date; voluntary resignation prior to April 30 forfeits the second installment.
+
+### 4.2 Equity Vesting Schedules and Separation Forfeiture
+
+All stock option grants and Restricted Stock Units (RSUs) follow the standard corporate equity schedule:
+
+- Standard Vesting Schedule: Four-year vesting lifecycle with a strict 1-year (12-month) cliff from the formal grant date, vesting exactly 25% of the total grant. Following the 1-year cliff, remaining equity vests in equal monthly increments of 1/48th over the subsequent 36 months.
+- Acceleration Clauses: In the event of a Change in Control (corporate acquisition), equity is subject to Double-Trigger Acceleration: equity accelerates 100% only if the employee is terminated without Cause within 12 months following the Change in Control. A corporate acquisition alone (Single-Trigger) does not accelerate unvested equity.
+- Unvested Equity upon Termination: All unvested RSUs and stock options terminate and are forfeited back to the corporate equity pool immediately upon the effective separation date. Vested stock options must be exercised within 90 calendar days of separation, after which unexercised options lapse permanently.
