@@ -18,8 +18,9 @@ class Settings:
     ]
     if "https://enterprise-rag-assistant-six.vercel.app" not in cors_origins:
         cors_origins.append("https://enterprise-rag-assistant-six.vercel.app")
-    collection_name: str = os.getenv("CHROMA_COLLECTION", "enterprise_documents")
-    embedding_model: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+    # The versioned collection avoids mixing Gemini vectors with old MiniLM vectors.
+    collection_name: str = os.getenv("CHROMA_COLLECTION", "enterprise_kb_v2")
+    embedding_model: str = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
     gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
     gemini_fallback_model: str = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.5-flash")

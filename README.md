@@ -1,12 +1,12 @@
 # Enterprise Document Knowledge Assistant (RAG)
 
-A full-stack proof of concept: React + Vite frontend, FastAPI backend, persistent ChromaDB vector storage, local Sentence Transformers embeddings, and Gemini answer generation.
+A full-stack proof of concept: React + Vite frontend, FastAPI backend, persistent ChromaDB vector storage, Google Gemini embeddings, and Gemini answer generation.
 
 ## Features
 
 - Upload PDF and UTF-8 TXT documents. Scanned PDF pages are processed with local English OCR.
 - Extract text and split it into 1,200-character chunks with 100-character overlap. Markdown heading context is included in each chunk.
-- Generate embeddings locally and persist vectors in ChromaDB.
+- Generate 768-dimensional embeddings through the Gemini API and persist vectors in ChromaDB.
 - Retrieve up to three relevant chunks using cosine distance.
 - Generate grounded answers with source labels and source excerpts.
 - Reject weak retrieval matches using a configurable distance threshold.
@@ -19,8 +19,8 @@ A full-stack proof of concept: React + Vite frontend, FastAPI backend, persisten
 - Python 3.11 recommended
 - Node.js 20 or newer
 - Tesseract OCR 5 with English language data, installed and available on `PATH`
-- Gemini API key for answer generation
-- Internet access for initial package/model downloads and Gemini requests
+- Gemini API key for embeddings and answer generation
+- Internet access for package installation and Gemini API requests
 
 ## Windows setup (PowerShell)
 
@@ -59,7 +59,10 @@ uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
 
 Open API docs at http://127.0.0.1:8000/docs.
 
-The first request that initializes embeddings may download the model and PyTorch dependencies; allow extra time.
+Document upload and search call the Gemini API to create embeddings. The app uses the separate
+`enterprise_kb_v2` ChromaDB collection because its 768-dimensional vectors cannot be mixed with
+vectors from the previous local embedding model. Re-upload documents you want indexed in the new
+collection.
 
 ### Start the frontend
 
@@ -82,11 +85,12 @@ Vercel.
 ### Deploy the backend to Azure
 
 1. Create an Azure Linux Web App using the repository's root `Dockerfile`. Choose an App
-   Service plan with enough memory for PyTorch and the sentence-transformer model.
+   Service plan sized for ChromaDB and PDF/OCR processing; embeddings are generated remotely.
 2. Enable persistent container storage with `WEBSITES_ENABLE_APP_SERVICE_STORAGE=true`.
    Set `WEBSITES_PORT=8000` and `CHROMA_PATH=/home/chroma`.
 3. Configure these application settings in Azure:
    - `GEMINI_API_KEY`: your private Gemini key (store it as an Azure app setting; never commit it)
+   - `CHROMA_COLLECTION=enterprise_kb_v2` and `EMBEDDING_MODEL=gemini-embedding-001`
    - `GEMINI_MODEL=gemini-3.8-flash`
    - `GEMINI_FALLBACK_MODEL=gemini-3.5-flash`
    - `CORS_ORIGINS`: the exact Vercel site origin, for example `https://your-project.vercel.app`
@@ -181,13 +185,15 @@ Deletes all indexed chunks for a document. URL-encode document names containing 
 pytest -q
 ```
 
-Tests cover extraction, chunk validation, API health, unsupported uploads and blank questions. They do not call Gemini or require the embedding model. Some API tests may initialize the vector collection indirectly only if the application code is changed to do so.
+Tests cover extraction, chunk validation, API health, unsupported uploads, blank questions, and
+vector-store operations with mocked embedding and storage clients. They do not make Gemini API
+requests.
 
 ## How RAG works
 
 1. **Ingestion:** extract text from a PDF/TXT file.
 2. **Chunking:** recursive character splitting preserves useful boundaries and overlaps adjacent chunks.
-3. **Embedding:** a local Sentence Transformers model maps each chunk into a dense vector.
+3. **Embedding:** the Gemini embedding API maps each chunk into a 768-dimensional dense vector.
 4. **Indexing:** ChromaDB persists the vector, chunk text, filename and chunk index.
 5. **Retrieval:** the question is embedded and ChromaDB returns up to three nearest chunks using cosine distance.
 6. **Grounding:** weak matches are rejected; otherwise retrieved context is inserted into the prompt.
@@ -205,7 +211,7 @@ Tests cover extraction, chunk validation, API health, unsupported uploads and bl
 
 ## Interview explanation (60–90 seconds)
 
-“I built a Retrieval-Augmented Generation application for querying enterprise documents. The ingestion pipeline extracts PDF/TXT text, splits it into overlapping chunks, embeds them with Sentence Transformers, and stores the embeddings with source metadata in persistent ChromaDB. When a user asks a question, the backend retrieves the top three chunks by cosine distance, rejects weak matches using a configurable threshold, and sends the remaining context to Gemini with strict grounding and citation instructions. The UI displays the answer alongside the retrieved source excerpts, so users can verify the evidence. I separated ingestion, storage, retrieval, generation and UI code to make the pipeline testable and maintainable.”
+“I built a Retrieval-Augmented Generation application for querying enterprise documents. The ingestion pipeline extracts PDF/TXT text, splits it into overlapping chunks, embeds them with Google's Gemini embedding API, and stores the 768-dimensional embeddings with source metadata in persistent ChromaDB. When a user asks a question, the backend retrieves the top three chunks by cosine distance, rejects weak matches using a configurable threshold, and sends the remaining context to Gemini with strict grounding and citation instructions. The UI displays the answer alongside the retrieved source excerpts, so users can verify the evidence. I separated ingestion, storage, retrieval, generation and UI code to make the pipeline testable and maintainable.”
 
 ## Suggested next improvements
 
